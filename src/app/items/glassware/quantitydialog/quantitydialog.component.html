@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Quantity</h1>
+<div mat-dialog-content>
+  <div class="container" fxLayout="row" fxLayoutAlign="center center">
+  <mat-form-field  >
+    <input class="form-control" matInput [(ngModel)]="data.quantity" type="number" placeholder="Quantity"  min="0" required> 
+  </mat-form-field>
+</div>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data.quantity"  [disabled]="!data.quantity" tabIndex="-1" >Done</button>
+</div>

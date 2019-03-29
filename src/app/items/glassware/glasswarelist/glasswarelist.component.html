@@ -15,9 +15,9 @@
 
 <div class="mat-elevation-z8" >
 <mat-table [dataSource]="listData" matSort>
-  <ng-container matColumnDef="Category_Name">
+  <ng-container matColumnDef="item_name">
   <mat-header-cell *matHeaderCellDef mat-sort-header>Category Name</mat-header-cell>
-  <mat-cell *matCellDef="let element">{{element.category_name}}</mat-cell>
+  <mat-cell *matCellDef="let element">{{element.item_name}}</mat-cell>
 </ng-container>
 <ng-container matColumnDef="Quantity">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</mat-header-cell>
@@ -25,13 +25,25 @@
   </ng-container>
   
   <ng-container matColumnDef="Addition" >
-    <mat-header-cell class="newaddheader" *matHeaderCellDef mat-sort-header>Add New Items</mat-header-cell>
-    <mat-cell *matCellDef="let row">
-        <button class="newaddbtn" *ngIf="getQuantity(row.$key) ==0" mat-icon-button  (click)="addto(row)"><mat-icon>add_to_queue</mat-icon></button>
+    <mat-header-cell class="newaddheader" *matHeaderCellDef >Add to pending New Arrivals</mat-header-cell>
+    <mat-cell *matCellDef="let row" >
+        <button class="newaddbtn" *ngIf="getQuantity(row.$key) ==0" mat-icon-button  (click)="openDialog(row, 'add')"><mat-icon>add_to_queue</mat-icon></button>
         <div class="quantity" *ngIf="getQuantity(row.$key) !=0">
-            <button class="adddeletebtn"mat-flat-button (click)="addto(row)">+</button>
-          {{getQuantity(row.$key)}}
+            <button class="adddeletebtn" mat-flat-button (click)="addto(row)">+</button>
+            <button class="newaddbtn1"   mat-flat-button  (click)="openDialog(row,'add')"> {{getQuantity(row.$key)}}</button>
           <button class="adddeletebtn" mat-flat-button (click)="subtractfromcart(row)" >-</button>
+      </div>
+      </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="Removal" >
+    <mat-header-cell class="newaddheader" *matHeaderCellDef >Add to pending Removals</mat-header-cell>
+    <mat-cell *matCellDef="let row" >
+        <button class="newaddbtn" *ngIf="getremovecartQuantity(row.$key) ==0" mat-icon-button  (click)="openDialog(row,'remove')" color="warn"><mat-icon>remove_from_queue</mat-icon></button>
+        <div class="quantity" *ngIf="getremovecartQuantity(row.$key) !=0">
+            <button class="adddeletebtn" mat-flat-button (click)="addtoRemovecart(row)">+</button>
+            <button class="newaddbtn1"   mat-flat-button  (click)="openDialog(row,'remove')">- {{getremovecartQuantity(row.$key)}}</button>
+          <button class="adddeletebtn" mat-flat-button (click)="subtractfromRemovecart(row)" >-</button>
       </div>
       </mat-cell>
   </ng-container>

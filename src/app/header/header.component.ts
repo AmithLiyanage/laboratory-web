@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
     // console.log(newObj.items)
      this.addcartitemcount=0;
    for(let itemid in newObj.items){
-    this.addcartitemcount+=newObj.items[itemid].Quantity;
+    this.addcartitemcount+=1;
    }
    });
 

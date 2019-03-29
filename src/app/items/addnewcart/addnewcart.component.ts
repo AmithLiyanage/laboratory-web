@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemAdditionService } from 'src/app/services/item-addition.service';
 import { DataSource } from '@angular/cdk/table';
-import { ShowOnDirtyErrorStateMatcher, MatTableDataSource } from '@angular/material';
+import { ShowOnDirtyErrorStateMatcher, MatTableDataSource, MatDialog } from '@angular/material';
 import { NgForm } from '@angular/forms';
 import { IfStmt } from '@angular/compiler';
+import { QuantitydialogComponent } from '../glassware/quantitydialog/quantitydialog.component';
 
 
 
@@ -18,14 +19,36 @@ export class AddnewcartComponent implements OnInit {
   cartitemArray:any[]=[];
   cartitemArrayWithoutkey:any[]=[];
   listData:MatTableDataSource<any>;
-  originalquantities:any[]=[]
+  originalglasswarequantities:any[]=[]
+  originalchemicalquantities:any[]=[]
   updatedQuantities:any[]=[]
+  dialogquantity:number;
 
  
 
-  constructor(private itemAddservice:ItemAdditionService) {
+  constructor(private itemAddservice:ItemAdditionService,private dialog:MatDialog) {
     
    }
+
+   displayedColumns: string[] = ['item_name','category','Addition'];
+
+
+   openDialog(glassware): void {
+    const dialogRef = this.dialog.open(QuantitydialogComponent, {
+      width: '250px',
+      data: { Quantity: this.dialogquantity}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.dialogquantity = result;
+      if(this.dialogquantity){
+      this.itemAddservice.Addtocartfromdialog(glassware,this.dialogquantity)
+      }
+      this.dialogquantity=undefined;
+      this.cartitemArray=[];
+    });
+  }
 
   ngOnInit() {
     let cart$=this.itemAddservice.getvouchersync()
@@ -33,13 +56,19 @@ export class AddnewcartComponent implements OnInit {
               const newObj: any = item;
                   
               for(let item in newObj.items){
-                    let obj={$key:item,category_name: newObj.items[item].category_name,Quantity: newObj.items[item].Quantity}
+                    let obj={$key:item,
+                      item_name: newObj.items[item].item_name,
+                      category: newObj.items[item].category,
+                      measurement:newObj.items[item].measurement,
+                      Quantity: newObj.items[item].Quantity}
                     this.cartitemArray.push(obj);
                    }
 
                    let array=this.cartitemArray.map(list=>{
                     return{
-                      category_name:list.category_name,
+                      item_name:list.item_name,
+                      category: list.category,
+                      measurement:list.measurement,
                       Quantity:list.Quantity,
                   };
              
@@ -52,11 +81,16 @@ export class AddnewcartComponent implements OnInit {
             })
        
 
-            this.itemAddservice.getoriginalquantities().subscribe(item=>{
-              this.originalquantities=item;
+            this.itemAddservice.getoriginalglasswarequantities().subscribe(item=>{
+              this.originalglasswarequantities=item;
 
             })
 
+            this.itemAddservice.getoriginalchemicalquantities().subscribe(item=>{
+              this.originalchemicalquantities=item;
+
+            })
+           
           }
 
 
@@ -75,7 +109,7 @@ this.cartitemArray=[];
         
 
 
-  displayedColumns: string[] = ['Category','Addition'];
+
 
   onSubmit(form: NgForm){
    this.itemAddservice.confirmaddition({
@@ -84,27 +118,48 @@ this.cartitemArray=[];
     Date_Recieved:form.value.createdate.toDateString(),
     items:this.cartitemArrayWithoutkey,
       } );
-
+  // console.log(this.cartitemArray);
       for(let i=0;i<this.cartitemArray.length;i++){
-        for(let j=0;j<this.originalquantities.length;j++){
-          if(this.cartitemArray[i].category_name==this.originalquantities[j].category_name){
+        console.log(this.cartitemArray[i].category);
+        if(this.cartitemArray[i].category=="Glassware"){
+        for(let j=0;j<this.originalglasswarequantities.length;j++){
+          if(this.cartitemArray[i].item_name==this.originalglasswarequantities[j].item_name){
             let updateditem={$key:this.cartitemArray[i].$key,
-              category_name:this.originalquantities[j].category_name,Quantity:(this.originalquantities[j].Quantity+this.cartitemArray[i].Quantity)}
-            console.log(updateditem);
+              item_name:this.originalglasswarequantities[j].item_name,
+              category:this.originalglasswarequantities[j].category,
+              measurement:this.originalglasswarequantities[j].measurement,
+              Quantity:(this.originalglasswarequantities[j].Quantity+this.cartitemArray[i].Quantity)}
+            // console.log(updateditem);
             this.updatedQuantities.push(updateditem);
           }
         }
+      }
+
+      console.log(this.originalchemicalquantities)
+      if(this.cartitemArray[i].category=="Chemicals"){
+        for(let j=0;j<this.originalchemicalquantities.length;j++){
+          if(this.cartitemArray[i].item_name==this.originalchemicalquantities[j].item_name){
+            let updateditem={$key:this.cartitemArray[i].$key,
+              item_name:this.originalchemicalquantities[j].item_name,
+              category:this.originalchemicalquantities[j].category,
+              measurement:this.originalchemicalquantities[j].measurement,
+              Quantity:(this.originalchemicalquantities[j].Quantity+this.cartitemArray[i].Quantity)}
+            //  console.log(updateditem);
+            this.updatedQuantities.push(updateditem);
+          }
+        }
+      }
       }
 
   
   
       
      this.itemAddservice.updateoriginalQuantities(this.updatedQuantities)
-      console.log(this.updatedQuantities)
+       console.log(this.updatedQuantities)
  
-  this.updatedQuantities=[];
+   this.updatedQuantities=[];
 
-   this.clearvoucart();
+    this.clearvoucart();
   }
   clearvoucart(){
     this.itemAddservice.clearvouchercart();

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import {Subscription} from 'rxjs';
+import { ItemRemovalService } from '../services/item-removal.service';
 
 @Component({
   selector: 'app-admin-nav',
@@ -13,21 +14,33 @@ import {Subscription} from 'rxjs';
 export class AdminNavComponent implements OnInit,OnDestroy {
   navisAuth:boolean;
   authSubcription:Subscription;
+  remcartitemcount:number;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches)
     );
 
-  constructor(private breakpointObserver: BreakpointObserver,private authservice:AuthService) {
+
+  constructor(private breakpointObserver: BreakpointObserver,private authservice:AuthService,private itemremservice:ItemRemovalService) {
 
   }
 
-  ngOnInit(){
+  async ngOnInit(){
     this.authSubcription=this.authservice.authChange.subscribe(status => {
       this.navisAuth=status;
       console.log(status)
     })
+
+    let cart$=await this.itemremservice.getRemovecart()
+    cart$.subscribe(cart=>{
+     const newObj: any = cart;
+     // console.log(newObj.items)
+      this.remcartitemcount=0;
+    for(let itemid in newObj.items){
+     this.remcartitemcount+=1;
+    }
+    });
   }
 
   ngOnDestroy(){
