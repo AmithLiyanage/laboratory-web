@@ -1,4 +1,4 @@
-<h1>Additions</h1>
+<h1>Removals</h1>
 
 <div class="searchdiv" fxLayout="row" fxLayoutAlign="center center">
     <mat-form-field class="search-form-field">
@@ -17,14 +17,14 @@
         <mat-cell *matCellDef="let element"> {{element.VoucherId}} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="Date_recieved">
+      <ng-container matColumnDef="Date_Removed">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Date Recieved </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Date_recieved}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.Date_Removed}} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="Recieved_from" >
+      <ng-container matColumnDef="Reason" >
         <mat-header-cell *matHeaderCellDef mat-sort-header> Recieved From </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Recieved_from}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.Reason}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="category">

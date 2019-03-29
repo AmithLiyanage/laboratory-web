@@ -23,11 +23,15 @@
 <div id="tablecontainer">
 <mat-table #table [dataSource]="listData"  class="mat-elevation-z8">
     <!-- Position Column -->
-    <ng-container matColumnDef="Category">
-      <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.category_name}} </mat-cell>
+    <ng-container matColumnDef="item_name">
+      <mat-header-cell *matHeaderCellDef> Item Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.item_name}} </mat-cell>
     </ng-container>
   
+    <ng-container matColumnDef="category">
+        <mat-header-cell *matHeaderCellDef> Category</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
+      </ng-container>
     <!-- Name Column -->
     <!-- <ng-container matColumnDef="Quantity">
       <mat-header-cell *matHeaderCellDef>Add New Quantity </mat-header-cell>
@@ -35,14 +39,21 @@
     </ng-container> -->
 
     <ng-container matColumnDef="Addition" >
-      <mat-header-cell class="newaddheader" *matHeaderCellDef >Add New Items</mat-header-cell>
+      <mat-header-cell class="newaddheader" *matHeaderCellDef >Change Quantity</mat-header-cell>
       <mat-cell *matCellDef="let element">
           <!-- <button class="newaddbtn" *ngIf="getQuantity(row.$key) ==0" mat-icon-button  (click)="addto(row)"><mat-icon>add_to_queue</mat-icon></button> -->
-          <div class="quantity" >
-              <button class="adddeletebtn"mat-flat-button (click)="addto(element)">+</button>
+          <!-- <div class="quantity" >
+              <button class="adddeletebtn2" mat-flat-button (click)="addto(element)">+</button>
               {{element.Quantity}}
-            <button class="adddeletebtn" mat-flat-button (click)="subtractfromcart(element)" >-</button>
-        </div>
+            <button class="adddeletebtn2" mat-flat-button (click)="subtractfromcart(element)" >-</button>
+        </div> -->
+
+        <!-- <button class="newaddbtn" *ngIf="(element.Quantity==0)" mat-icon-button  (click)="openDialog(element)"><mat-icon>add_to_queue</mat-icon></button> -->
+        <div class="quantity" *ngIf="element.Quantity!=0">
+            <button class="adddeletebtn" mat-flat-button (click)="addto(element)">+</button>
+            <button class="newaddbtn1"   mat-flat-button  (click)="openDialog(element)">{{element.Quantity}} {{element.measurement}}</button>
+          <button class="adddeletebtn" mat-flat-button (click)="subtractfromcart(element)" >-</button>
+      </div>
         </mat-cell>
     </ng-container>
   

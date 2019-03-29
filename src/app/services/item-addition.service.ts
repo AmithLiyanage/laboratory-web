@@ -12,29 +12,34 @@ export class ItemAdditionService {
   vocucherlist: AngularFireList <any> 
   addvoucher: AngularFireObject<any>;
   glasswarelist: AngularFireList <any>;
+  chemicalist:AngularFireList <any>;
   
   constructor(private db:AngularFireDatabase,private firebase:AngularFireDatabase) { 
     this.vocucherlist = db.list('Addvouchers');
     this.glasswarelist=this.firebase.list('glassware');
+    this.chemicalist=this.firebase.list('chemicals');
 
   }
 // Creating a new vouchercart if no voucher is present
   private newvoucher(){
-   return this.db.list('/new-additions').push({
+   return this.db.list('/new-additions-cart').push({
       dateTimeCreated:new Date().getTime()
     })
   }
+  
 // Getting vouchercart asynchronously
   async  getvoucher(){
-    let voucherid= await this.getOrCreateAddVoucherId();
-    return this.db.object('/new-additions/' +voucherid)
+    let voucherid= await this.getOrCreateAddVoucherId().catch(error=>{
+      console.log(error);
+    });
+    return this.db.object('/new-additions-cart/' +voucherid)
 
   }
 
 // Getting voucherid synchronously
   getvouchersync(){
     let Addvoucherid=localStorage.getItem('Addvoucherid');
-    return this.db.object('/new-additions/' +Addvoucherid).valueChanges()
+    return this.db.object('/new-additions-cart/' +Addvoucherid).valueChanges()
   }
 
 
@@ -49,7 +54,7 @@ export class ItemAdditionService {
   }
 // Getting item
   private getItem(AddvoucherId:string,itemId:string){
-   return this.db.object('/new-additions/' +AddvoucherId +'/items/' +itemId );
+   return this.db.object('/new-additions-cart/' +AddvoucherId +'/items/' +itemId );
   }
 // Adding new item or increasing count
   async Addtovoucher(item1){
@@ -60,15 +65,39 @@ export class ItemAdditionService {
       const newObj: any = item;
       if(item!=null){
         item$.update(
-          {category_name:item1.category_name,
+          {item_name:item1.item_name,
+            category:item1.category,
+            measurement:item1.measurement,
           Quantity:(newObj.Quantity)+1});
       }else{
-         item$.set({category_name:item1.category_name,
+         item$.set({item_name:item1.item_name,
+          category:item1.category,
+          measurement:item1.measurement,
           Quantity:1});
       }
     })
   }
 
+  async Addtocartfromdialog(item1,dQuantity){
+    let AddvoucherId=await this.getOrCreateAddVoucherId();
+    let item$=this.getItem(AddvoucherId,item1.$key )
+    item$.valueChanges().pipe(take(1)).subscribe(item =>{
+
+      const newObj: any = item;
+      if(item!=null){
+        item$.update(
+          {item_name:item1.item_name,
+            category:item1.category,
+            measurement:item1.measurement,
+          Quantity:dQuantity});
+      }else{
+         item$.set({item_name:item1.item_name,
+          category:item1.category,
+          measurement:item1.measurement,
+          Quantity:dQuantity});
+      }
+    })
+  }
   
 // subtracting or removing items form cart
   async subfromvoucher(item1){
@@ -78,16 +107,20 @@ export class ItemAdditionService {
    
       const newObj: any = item;
       if(newObj.Quantity==1){
-         this.db.object('/new-additions/' + AddvoucherId + '/items/' + item1.$key).remove();
+         this.db.object('/new-additions-cart/' + AddvoucherId + '/items/' + item1.$key).remove();
          return
       }
       if(item!=null){
         item$.update(
-          {category_name:item1.category_name,
+          {item_name:item1.item_name,
+            category:item1.category,
+            measurement:item1.measurement,
           Quantity:(newObj.Quantity)-1});
       }else{
  
-         item$.set({category_name:item1.category_name,
+         item$.set({item_name:item1.item_name,
+          category:item1.category,
+          measurement:item1.measurement,
           Quantity:1});
       }
     })
@@ -105,15 +138,20 @@ export class ItemAdditionService {
   }
 
   // Getting original quantities in order to update
-  getoriginalquantities(){
+  getoriginalglasswarequantities(){
     this.glasswarelist=this.firebase.list('glassware');
     return this.glasswarelist.valueChanges();
+  }
+
+  getoriginalchemicalquantities(){
+    this.chemicalist=this.firebase.list('chemicals');
+    return this.chemicalist.valueChanges();
   }
 
 // clearing the cart in database
   async clearvouchercart(){
       let vouId = await this.getOrCreateAddVoucherId();
-      this.db.object('/new-additions/' + vouId + '/items').remove();
+      this.db.object('/new-additions-cart/' + vouId + '/items').remove();
   }
 
   // Get submitted vouchers
@@ -124,13 +162,23 @@ export class ItemAdditionService {
  
 // Updating original quantities
   updateoriginalQuantities(data){
-    console.log(data[0].$key)
-    for(let i=0;i<data.length;i++){
+    console.log(data)
+    for(let i=0;i<data.length;i++)
+    {
+      if(data[i].category=="Glassware"){
       this.glasswarelist.update(
         data[i].$key,{
-        category_name: data[i].category_name,
+        item_name: data[i].item_name,
         Quantity:data[i].Quantity
       })
+    }
+    if(data[i].category=="Chemicals"){
+      this.chemicalist.update(
+        data[i].$key,{
+        item_name: data[i].item_name,
+        Quantity:data[i].Quantity
+      })
+    }
     }
   }
 }

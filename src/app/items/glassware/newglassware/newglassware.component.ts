@@ -3,7 +3,7 @@ import {FormGroup,FormControl} from '@angular/forms';
 import {MatDialogRef} from '@angular/material'
 
 
-import { ItemService } from 'src/app/services/item.service';
+import { ItemService } from 'src/app/services/glassware.service';
 
 @Component({
   selector: 'app-newglassware',

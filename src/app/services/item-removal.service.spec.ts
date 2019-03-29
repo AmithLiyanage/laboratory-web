@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ItemService } from './glassware.service';
+import { ItemRemovalService } from './item-removal.service';
 
-describe('ItemService', () => {
+describe('ItemRemovalService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: ItemService = TestBed.get(ItemService);
+    const service: ItemRemovalService = TestBed.get(ItemRemovalService);
     expect(service).toBeTruthy();
   });
 });

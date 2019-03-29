@@ -1,5 +1,7 @@
 export interface item {
     $key: string;
-    category_name:string;
+    category:string;
+    item_name:string;
     Quantity:string;
+    measurement:string;
   }

@@ -17,6 +17,7 @@ export class SignUpComponent implements OnInit {
 
   SubmitSignUp(){
     this.authService.SignUp(this.email,this.password);
+    console.log(this.email,this.password);
   }
 
 }

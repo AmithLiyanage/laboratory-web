@@ -37,9 +37,10 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatExpansionModule } from '@angular/material';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSelectModule} from '@angular/material/select';
+import {ItemService} from './services/glassware.service';
 
-import {ItemService} from './services/item.service';
 import { GlasswarelistComponent } from './items/glassware/glasswarelist/glasswarelist.component';
 import { AdminNavComponent } from './admin-nav/admin-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -49,6 +50,12 @@ import { AddnewcartComponent } from './items/addnewcart/addnewcart.component';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AddhistoryComponent } from './items/addhistory/addhistory.component';
+import { QuantitydialogComponent } from './items/glassware/quantitydialog/quantitydialog.component';
+import { RemovalcartComponent } from './items/removalcart/removalcart.component';
+import { RemhistoryComponent } from './items/remhistory/remhistory.component';
+import { ChemicallistComponent } from './items/chemicals/chemicallist/chemicallist.component';
+import { NewchemicalsdialogComponent } from './items/chemicals/newchemicalsdialog/newchemicalsdialog.component';
+import { ChemicalquantitydialogComponent } from './items/chemicals/chemicalquantitydialog/chemicalquantitydialog.component';
 
 
 @NgModule({
@@ -67,6 +74,15 @@ import { AddhistoryComponent } from './items/addhistory/addhistory.component';
     AdminNavComponent,
     AddnewcartComponent,
     AddhistoryComponent,
+    QuantitydialogComponent,
+    RemovalcartComponent,
+    RemhistoryComponent,
+    ChemicallistComponent,
+    NewchemicalsdialogComponent,
+    ChemicalquantitydialogComponent,
+
+   
+
   ],
 
   imports: [
@@ -97,10 +113,16 @@ import { AddhistoryComponent } from './items/addhistory/addhistory.component';
     MatBadgeModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatExpansionModule,
+    MatSelectModule
+
   ],
   providers: [AuthService,{ provide: FirestoreSettingsToken, useValue: {} },ItemService,ItemAdditionService,MatDatepickerModule],
   bootstrap: [AppComponent],
-  entryComponents:[NewglasswareComponent]
+  entryComponents:[NewglasswareComponent,
+    NewchemicalsdialogComponent,
+    QuantitydialogComponent,
+    ChemicalquantitydialogComponent]
 })
 export class AppModule { }
