@@ -1,55 +1,44 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
-    *ngIf="navisAuth"
-    #drawer
-    class="sidenav"
-    fixedInViewport="false"
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="!(isHandset$ | async)"
-  >
-    <mat-toolbar color="primary">Menu</mat-toolbar>
-
-    <mat-nav-list>
-
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          Equipments
-        </mat-expansion-panel-header>
-
+<mat-sidenav-container  class="sidenav-container">
+    <mat-sidenav *ngIf="navisAuth" #drawer class="sidenav" fixedInViewport="false"
+        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+        [mode]="(isHandset$ | async) ? 'over' : 'side'"
+        [opened]="!(isHandset$ | async)">
+      <mat-toolbar color="primary">Menu</mat-toolbar>
+      <mat-nav-list >
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            Equipments
+          </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/Glasswarelist">Glassware</a>
+        <a mat-list-item routerLink="/Chemicallist">Chemicals</a>
+        <a mat-list-item routerLink="/Glasswarelist">Peishables</a>
+        <a mat-list-item routerLink="/Glasswarelist">Permanet equipment</a>
+     
   
-
-    </mat-expansion-panel>
-
-        <a mat-list-item routerLink="/AddHistory">Addition History</a>
-        <a mat-list-item  routerLink="/Removalcart">Removals<span id="remcartcountbadge" matBadge="{{remcartitemcount}}" matBadgePosition="before"  matBadgeColor="warn"></span></a>
-        <a mat-list-item routerLink="/RemovalHistory">Removal History</a>
-      </mat-nav-list>
-
-        <a mat-list-item [routerLink]="['/glasswarelist']" routerLinkActive="router-link-active">Permanet Equipments</a>
-        <a mat-list-item [routerLink]="['/glasswarelist']" routerLinkActive="router-link-active">Glasswares</a>
-        <a mat-list-item [routerLink]="['/glasswarelist']" routerLinkActive="router-link-active">Perishables</a>
-        <a mat-list-item [routerLink]="['/glasswarelist']" routerLinkActive="router-link-active">Chemicals</a>
-        <a mat-list-item [routerLink]="['/addHistory']" routerLinkActive="router-link-active">Additions</a>
       </mat-expansion-panel>
-    </mat-nav-list>
-
-  </mat-sidenav>
-
-  <mat-sidenav-content>
-    <mat-toolbar color="accent">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="(isHandset$ | async)"
-      >
-        <!-- <mat-icon aria-label="Side nav toggle icon">menu</mat-icon> -->
-      </button>
-      <span>weblab</span>
-    </mat-toolbar>
-    <ng-content></ng-content>
-    <!-- Add Content Here -->
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  
+          <a mat-list-item routerLink="/AddHistory">Addition History</a>
+          <a mat-list-item  routerLink="/Removalcart">Removals<span id="remcartcountbadge" matBadge="{{remcartitemcount}}" matBadgePosition="before"  matBadgeColor="warn"></span></a>
+          <a mat-list-item routerLink="/RemovalHistory">Removal History</a>
+        </mat-nav-list>
+  
+   
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <!-- <mat-toolbar color="primary">
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()"
+          *ngIf="isHandset$ | async">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <span>weblab</span>
+      </mat-toolbar> -->
+      <ng-content></ng-content>
+      <!-- Add Content Here -->
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemAdditionService } from 'src/app/services/item-addition.service';
 import { DataSource } from '@angular/cdk/table';
-import { ShowOnDirtyErrorStateMatcher, MatTableDataSource, MatDialog } from '@angular/material';
+import { ShowOnDirtyErrorStateMatcher, MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
 import { NgForm } from '@angular/forms';
 import { IfStmt } from '@angular/compiler';
 import { QuantitydialogComponent } from '../glassware/quantitydialog/quantitydialog.component';
+import { UiService } from 'src/app/services/ui.service';
+//\\ import { UiService } from 'src/app/services/ui.service';
 
 
 
@@ -26,7 +28,9 @@ export class AddnewcartComponent implements OnInit {
 
  
 
-  constructor(private itemAddservice:ItemAdditionService,private dialog:MatDialog) {
+  constructor(private itemAddservice:ItemAdditionService,private dialog:MatDialog,
+     private uiservice:UiService,
+    private snackBar: MatSnackBar) {
     
    }
 
@@ -167,8 +171,10 @@ this.cartitemArray=[];
   }
 
   test(){
-
-
+      this.uiservice.showSnackbar("glassware updated",null,3000);
+//  this.snackBar.open("testing ",null,{
+//    duration:2000,
+//  });
     //  console.log(this.cartitemArray);
 
 

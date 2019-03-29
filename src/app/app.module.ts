@@ -39,6 +39,12 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSelectModule} from '@angular/material/select';
+
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
+
+
+
 import {ItemService} from './services/glassware.service';
 
 import { GlasswarelistComponent } from './items/glassware/glasswarelist/glasswarelist.component';
@@ -115,8 +121,8 @@ import { ChemicalquantitydialogComponent } from './items/chemicals/chemicalquant
     MatNativeDateModule,
     FlexLayoutModule,
     MatExpansionModule,
-    MatSelectModule
-
+    MatSelectModule,
+    MatSnackBarModule
   ],
   providers: [AuthService,{ provide: FirestoreSettingsToken, useValue: {} },ItemService,ItemAdditionService,MatDatepickerModule],
   bootstrap: [AppComponent],

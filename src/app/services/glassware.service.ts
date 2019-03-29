@@ -1,14 +1,24 @@
 import { Injectable } from '@angular/core';
 import {FormGroup,FormControl, Validators } from '@angular/forms';
 import {AngularFireDatabase,AngularFireList} from 'angularfire2/database'
+import { UiService } from './ui.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
 
-  constructor(private firebase:AngularFireDatabase) {
-    console.log(this.glasswarelist);
+  items: Observable<any[]>;
+  constructor(private firebase:AngularFireDatabase,private uiservice:UiService) {
+    this.glasswarelist=firebase.list("glassware")
+    this.items = this.glasswarelist.snapshotChanges().pipe(
+      map(changes => 
+        changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+      )
+    );
+
   }
   glasswarelist: AngularFireList <any>;
   
@@ -25,9 +35,16 @@ export class ItemService {
 
   getGlassware(){
     this.glasswarelist=this.firebase.list('glassware');
+   
     return this.glasswarelist.snapshotChanges();
   }
   
+
+  getGlasswareitems(){
+    this.glasswarelist=this.firebase.list('glassware');
+   
+    return this.glasswarelist.valueChanges();
+  }
   insertGlassware(glassware){
     console.log(this.glasswarelist);
     this.glasswarelist.push({
@@ -36,6 +53,8 @@ export class ItemService {
       Quantity: 0,
       measurement:"units",
     });
+
+    this.uiservice.showSnackbar(glassware.item_name +"Created",null,3000);
   }
 
   updateGlassware(glassware){
@@ -44,10 +63,21 @@ export class ItemService {
       item_name: glassware.item_name,
       Quantity:glassware.Quantity
     })
+
+    this.uiservice.showSnackbar("Updated to "+glassware.item_name,null,3000);
+
   }
 
   deleteGlassware($key:string){
     this.glasswarelist.remove($key); 
+    // console.log(this.glasswarelist[$key]);
+    let item1;
+    (this.glasswarelist.valueChanges().subscribe(item =>{
+      for(let i=0;i<item.length;i++){
+          
+      }
+    }));
+    this.uiservice.showSnackbar("Deleted ",null,3000);
   }
 
   // populating for edit
