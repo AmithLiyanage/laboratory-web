@@ -5,14 +5,16 @@
 </mat-toolbar> -->
 <mat-card class="my-card">
   <mat-card-title>{{chemservice.form.controls['$key'].value?"Modify Chemicals":"New Chemicals"}}
-    
-      <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabInex="-1"><mat-icon>clear</mat-icon></button>
-  </mat-card-title>
-<mat-card-content>
 
-<form [formGroup]="chemservice.form" class="normal-form" (submit)="onSubmit()" >
- 
-    <div class="controles-container">
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabInex="-1">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+
+    <form [formGroup]="chemservice.form" class="normal-form" (submit)="onSubmit()">
+
+      <div class="controles-container">
         <input type="hidden" formControlName="$key">
         <mat-form-field>
           <input formControlName="item_name" matInput placeholder="Item Name*" required>
@@ -21,7 +23,7 @@
 
         <mat-form-field>
           <mat-label>Unit of Measurement</mat-label>
-          <mat-select  formControlName="measurement" [(value)]="measurement" required>
+          <mat-select formControlName="measurement" [(value)]="measurement" required>
             <mat-option value="ml">ml</mat-option>
             <mat-option value="g">g</mat-option>
           </mat-select>
@@ -31,13 +33,11 @@
           <input formControlName="Quantity" type="number" matInput placeholder="Quantity">
           <mat-error>This field is mandatory.</mat-error>
         </mat-form-field> -->
-        </div>
-        <div class="button-row">
-            <button mat-raised-button color="primary" type="submit" [disabled]="chemservice.form.invalid">Submit</button>
-        </div>
-        
-</form>
-</mat-card-content>
+      </div>
+      <div class="button-row">
+        <button mat-raised-button color="primary" type="submit" [disabled]="chemservice.form.invalid">Submit</button>
+      </div>
+
+    </form>
+  </mat-card-content>
 </mat-card>
-
-

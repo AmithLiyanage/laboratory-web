@@ -36,6 +36,7 @@
       <!-- Calling SignIn Api from AuthService -->
       <div class="formGroup">
         <button
+          *ngIf="!isLoading"
           type="button"
           mat-raised-button
           color="primary"
@@ -43,7 +44,9 @@
           Log in
         </button>
       </div>
-
+      <div class="loadingspinner" fxLayout="row" fxLayoutAlign="center center">
+      <mat-spinner *ngIf="isLoading"></mat-spinner>
+      </div>
       <div class="formGroup">
         <span class="mat-h4"><span class="orInner">or</span></span>
       </div>

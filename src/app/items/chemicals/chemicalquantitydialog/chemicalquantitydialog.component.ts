@@ -9,14 +9,14 @@ import { quantitydialog } from './chemquantity.model';
 })
 export class ChemicalquantitydialogComponent implements OnInit {
 
-  constructor( public dialogrefchem:MatDialogRef<ChemicalquantitydialogComponent>,
+  constructor(public dialogrefchem: MatDialogRef<ChemicalquantitydialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: quantitydialog) { }
 
   ngOnInit() {
   }
 
   onNoClick(): void {
-  this.dialogrefchem.close();
+    this.dialogrefchem.close();
   }
 
 }

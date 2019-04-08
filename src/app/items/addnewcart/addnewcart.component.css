@@ -10,5 +10,38 @@ table {
   }
 
   mat-header-row{
-      margin-left: 50px;
+      margin-left: 30px;
+      
   }
+
+  mat-header-cell{
+      margin-right:-200px;
+  }
+
+.isempty{
+    margin-top: 100px
+}
+
+.adddeletebtn{
+    min-width: 1%;
+}
+
+.categoryhead{
+    margin-left: 100px;  
+}
+
+.presentquantity{
+    margin-left: 80px;
+}
+
+.newaddbtn1{
+    min-width: 80px;
+}
+
+.newaddheader{
+    margin-left:150px;
+}
+
+.action{
+    margin-right:-200px;
+}

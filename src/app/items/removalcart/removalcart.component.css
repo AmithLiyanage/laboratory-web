@@ -1,3 +1,11 @@
+#title{
+    margin-top:50px;
+}
+
+.searchdiv{
+    margin-top:-30px;
+}
+
 .container{
     width:100%;
     text-align: center;
@@ -10,5 +18,29 @@ table {
   }
 
   mat-header-row{
-      margin-left: 80px;
+      margin-left: 20px;
   }
+  
+.isempty{
+    margin-top: 100px
+}
+
+.adddeletebtn{
+    min-width: 1%;
+}
+
+.categoryhead{
+    margin-left: 40px;  
+}
+
+.presentquantity{
+    margin-left: 40px;
+}
+
+.newaddbtn1{
+    min-width: 80px;
+}
+
+.newaddheader{
+    margin-left: 90px;
+}

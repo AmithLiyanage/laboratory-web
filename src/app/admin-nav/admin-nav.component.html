@@ -3,7 +3,7 @@
         [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
         [mode]="(isHandset$ | async) ? 'over' : 'side'"
         [opened]="!(isHandset$ | async)">
-      <mat-toolbar color="primary">Menu</mat-toolbar>
+      <!-- <mat-toolbar color="primary">Menu</mat-toolbar> -->
       <mat-nav-list >
         <mat-expansion-panel>
           <mat-expansion-panel-header>
@@ -18,8 +18,9 @@
       </mat-expansion-panel>
   
           <a mat-list-item routerLink="/AddHistory">Addition History</a>
-          <a mat-list-item  routerLink="/Removalcart">Removals<span id="remcartcountbadge" matBadge="{{remcartitemcount}}" matBadgePosition="before"  matBadgeColor="warn"></span></a>
+          <a mat-list-item routerLink="/Removalcart">Removals<span id="remcartcountbadge" *ngIf="remcartitemcount>0"  matBadge="{{remcartitemcount}}" matBadgePosition="before"  matBadgeColor="warn"></span></a>
           <a mat-list-item routerLink="/RemovalHistory">Removal History</a>
+          <a mat-list-item routerLink="/lendingform">Lending Items</a>
         </mat-nav-list>
   
    

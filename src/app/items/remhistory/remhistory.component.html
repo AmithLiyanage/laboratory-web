@@ -1,64 +1,64 @@
-<h1>Removals</h1>
+<h1 id="title" class="mat-display-2">Removals</h1>
 
 <div class="searchdiv" fxLayout="row" fxLayoutAlign="center center">
-    <mat-form-field class="search-form-field">
-      <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
-      <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
+  <mat-form-field class="search-form-field">
+    <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
+    <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
 </div>
 
 <div id="tablecontainer">
-  <mat-table #table [dataSource]="listData"  class="mat-elevation-z8" matSort >
-      <!-- Position Column -->
-      <ng-container matColumnDef="VoucherId">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> VoucherID </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.VoucherId}} </mat-cell>
-      </ng-container>
+  <mat-table #table [dataSource]="listData" class="mat-elevation-z8" matSort>
+    <!-- Position Column -->
+    <ng-container matColumnDef="VoucherId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> VoucherID </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.VoucherId}} </mat-cell>
+    </ng-container>
 
-      <ng-container matColumnDef="Date_Removed">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Date Recieved </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Date_Removed}} </mat-cell>
-      </ng-container>
+    <ng-container matColumnDef="Date_Removed">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Date Recieved </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Date_Removed}} </mat-cell>
+    </ng-container>
 
-      <ng-container matColumnDef="Reason" >
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Recieved From </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Reason}} </mat-cell>
-      </ng-container>
+    <ng-container matColumnDef="Reason">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Recieved From </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Reason}} </mat-cell>
+    </ng-container>
 
-      <ng-container matColumnDef="category">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Category </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
-      </ng-container>
+    <ng-container matColumnDef="category">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Category </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
+    </ng-container>
 
-      <ng-container matColumnDef="Item_name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Item </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Item_name}} </mat-cell>
-      </ng-container>
-    
-      <ng-container matColumnDef="Quantity">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Quantity}} {{element.measurement}}</mat-cell>
-      </ng-container>
-      <!-- Name Column -->
-      <!-- <ng-container matColumnDef="Quantity">
+    <ng-container matColumnDef="Item_name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Item </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Item_name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Quantity">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Quantity}} {{element.measurement}}</mat-cell>
+    </ng-container>
+    <!-- Name Column -->
+    <!-- <ng-container matColumnDef="Quantity">
         <mat-header-cell *matHeaderCellDef>Add New Quantity </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.Quantity}} </mat-cell>
       </ng-container> -->
 
-    
-  
-    
-      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      
-    </mat-table>
-    <mat-paginator [pageSizeOptions]="[5,10,25,100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
-  </div>
-  
-  
-  <!-- <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5,10,25,100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+</div>
+
+
+<!-- <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
     <button mat-raised-button color="primary" (click)="onSubmit(f)" [disabled]="f.invalid">Confirm</button>
     <button mat-raised-button (click)="clearvoucart()" color="warn">Cancel</button>
   </div> -->

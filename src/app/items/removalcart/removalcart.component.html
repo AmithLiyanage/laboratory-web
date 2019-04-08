@@ -1,69 +1,96 @@
 <div class="container" fxlayout="column" fxLayoutAlign="center center">
-  <h1 >Remove inventory</h1>
-  </div>
-  <div >
-    <form class="addcartform" fxLayout="row"   #f="ngForm" fxLayoutAlign="center center" fxLayoutGap="50px" (ngSubmit)="onSubmit(f)">
-      <mat-form-field class="example-full-width">
-        <input ngModel matInput placeholder="Voucher No" required name="voucherNo" #vouInput="ngModel" >
-      </mat-form-field>
-    
-      <mat-form-field class="example-full-width">
-        <input ngModel matInput required  #FromInput="ngModel" name="Reason" placeholder="Reason for Removal">
-      </mat-form-field>
-   
-  
-    <mat-form-field  class="example-full-width">
-      <input  matInput [matDatepicker]="picker" placeholder="Date" ngModel name="createdate" required>
-      <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+  <h1 id="title" class="mat-display-2">Remove Inventory</h1>
+</div>
+<div class="notempty" *ngIf="iscartnotempty">
+  <form class="addcartform" fxLayout="row" #f="ngForm" fxLayoutAlign="center center" fxLayoutGap="50px"
+    (ngSubmit)="onSubmit(f)">
+    <mat-form-field class="example-full-width">
+      <input ngModel matInput placeholder="Voucher No" required name="voucherNo" #vouInput="ngModel">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <!-- <input ngModel matInput required  #FromInput="ngModel" name="Reason" placeholder="Reason for Removal"> -->
+      <mat-label>Reason for Removal</mat-label>
+      <mat-select ngModel #FromInput="ngModel" name="Reason" [(value)]="Reason" required>
+        <mat-option value="Breakage">Breakage</mat-option>
+        <mat-option value="Missing">Missing</mat-option>
+        <mat-option value="Depleted">Depleted</mat-option>
+        <mat-option value="Other">Other </mat-option>
+      </mat-select>
+      <mat-error>This field is mandatory.</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="example-full-width">
+      <input matInput [matDatepicker]="picker" placeholder="Date" [(ngModel)]="planModel.start_time" name="createdate"
+        required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
   </form>
-  </div>
-  
+
+
   <div id="tablecontainer">
-  <mat-table #table [dataSource]="listData"  class="mat-elevation-z8">
+    <mat-table #table [dataSource]="listData" class="mat-elevation-z8">
       <!-- Position Column -->
-      <ng-container matColumnDef="Category">
-        <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+      <ng-container matColumnDef="item_name">
+        <mat-header-cell *matHeaderCellDef> Item Name </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.item_name}} </mat-cell>
       </ng-container>
-    
+
+
+      <ng-container matColumnDef="Category">
+        <mat-header-cell class="categoryhead" *matHeaderCellDef> Category </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="OriginalQuantity">
+        <mat-header-cell *matHeaderCellDef> Present Quantity </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.OriginalQuantity}}  {{element.measurement}} </mat-cell>
+      </ng-container>
       <!-- Name Column -->
       <!-- <ng-container matColumnDef="Quantity">
         <mat-header-cell *matHeaderCellDef>Add New Quantity </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.Quantity}} </mat-cell>
       </ng-container> -->
-  
-      <ng-container matColumnDef="Addition" >
-        <mat-header-cell class="newaddheader" *matHeaderCellDef >Change Quantity</mat-header-cell>
+
+      <ng-container matColumnDef="Addition">
+        <mat-header-cell class="newaddheader" *matHeaderCellDef>Change Quantity</mat-header-cell>
         <mat-cell *matCellDef="let element">
-            <!-- <button class="newaddbtn" *ngIf="getQuantity(row.$key) ==0" mat-icon-button  (click)="addto(row)"><mat-icon>add_to_queue</mat-icon></button> -->
-            <!-- <div class="quantity" >
+          <!-- <button class="newaddbtn" *ngIf="getQuantity(row.$key) ==0" mat-icon-button  (click)="addto(row)"><mat-icon>add_to_queue</mat-icon></button> -->
+          <!-- <div class="quantity" >
                 <button class="adddeletebtn2" mat-flat-button (click)="addto(element)">+</button>
                 {{element.Quantity}}
               <button class="adddeletebtn2" mat-flat-button (click)="subtractfromcart(element)" >-</button>
           </div> -->
-  
+
           <!-- <button class="newaddbtn" *ngIf="(element.Quantity==0)" mat-icon-button  (click)="openDialog(element)"><mat-icon>add_to_queue</mat-icon></button> -->
           <div class="quantity" *ngIf="element.Quantity!=0">
-              <button class="adddeletebtn" mat-flat-button (click)="addtoRemovecart(element)">+</button>
-              <button class="newaddbtn1"   mat-flat-button  (click)="openDialog(element)">-{{element.Quantity}} {{element.measurement}}</button>
-            <button class="adddeletebtn" mat-flat-button (click)="subtractfromRemovecart(element)" >-</button>
-        </div>
-          </mat-cell>
+            <button class="adddeletebtn" mat-flat-button (click)="addtoRemovecart(element)">+</button>
+            <button class="newaddbtn1" mat-flat-button (click)="openDialog(element)">-{{element.Quantity}}
+              {{element.measurement}}</button>
+            <button class="adddeletebtn" mat-flat-button (click)="subtractfromRemovecart(element)">-</button>
+          </div>
+        </mat-cell>
       </ng-container>
-    
-  
-    
+
+
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      
+
     </mat-table>
   </div>
-  
-  
+
+
   <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
     <button mat-raised-button color="primary" (click)="onSubmit(f)" [disabled]="f.invalid">Confirm</button>
     <button mat-raised-button (click)="clearvoucart()" color="warn">Cancel</button>
-    <button mat-raised-button (click)="test()" color="warn">test</button>
   </div>
+</div>
+
+
+<div class="isempty" *ngIf="iscartnotempty==false" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+  <h1 class="mat-display-1">No Items Available </h1>
+  <h1 class="mat-h2">Add items from equipments and come back</h1>
+</div>

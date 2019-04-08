@@ -1,0 +1,102 @@
+
+<mat-tab-group mat-align-tabs="center">
+  <mat-tab label="Glassware">
+
+  <div class="topcontainer" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px">
+  <h1 class="mat-h1">Glassware</h1>
+  <mat-form-field class="search-form-field">
+    <input matInput [(ngModel)]="glasssearchKey" placeholder="Filter" autocomplete="off" (keyup)="applyFilterglass()">
+    <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="glasssearchKey" (click)="onSearchClearglass()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+      <mat-table #table [dataSource]="listDataGlass" class="mat-elevation-z8">
+        <!-- Position Column -->
+        <ng-container matColumnDef="item_name">
+          <mat-header-cell *matHeaderCellDef> Item Name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.item_name}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="AvailableQuantity">
+          <mat-header-cell *matHeaderCellDef> Available </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Quantity}} {{  element.measurement}} </mat-cell>
+        </ng-container>
+
+  
+        <ng-container matColumnDef="lendquantity">
+          <mat-header-cell class="newaddheader"  *matHeaderCellDef>Quantity to lend</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button class="newaddbtn" *ngIf="getQuantity(row.$key) ==0" mat-icon-button (click)="openDialog(row, 'add')">
+              <mat-icon>add_to_queue</mat-icon>
+            </button>
+            <div class="quantity" *ngIf="getQuantity(row.$key) !=0">
+              <button class="adddeletebtn" mat-flat-button (click)="addto(row)">+</button>
+              <button class="newaddbtn1" mat-flat-button (click)="openDialog(row,'add')">
+                {{getQuantity(row.$key)}} {{getMeasurementUnitlend(row.$key)}}</button>
+              <button class="adddeletebtn" mat-flat-button (click)="subtractfromcart(row)">-</button>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginatorglass [pageSizeOptions]="[5,10,25,100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+    
+
+
+  </mat-tab>
+  <mat-tab label="Chemicals">
+
+    <div class="topcontainer" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px">
+      <h1 class="mat-h1">Chemicals</h1>
+      <mat-form-field class="search-form-field">
+        <input matInput [(ngModel)]="chemicalsearchKey" placeholder="Filter" autocomplete="off" (keyup)="applyFilterchem()">
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="chemicalsearchKey" (click)="onSearchClearchem()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <div id="tablecontainer">
+      <mat-table #table [dataSource]="listDatachemicals" class="mat-elevation-z8">
+        <!-- Position Column -->
+        <ng-container matColumnDef="item_name">
+          <mat-header-cell *matHeaderCellDef> Item Name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.item_name}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="AvailableQuantity">
+          <mat-header-cell *matHeaderCellDef> Available </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Quantity}} {{  element.measurement}} </mat-cell>
+        </ng-container>
+
+  
+        <ng-container matColumnDef="lendquantity">
+          <mat-header-cell class="newaddheader"  *matHeaderCellDef>Quantity to lend</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button class="newaddbtn" *ngIf="getQuantity(row.$key) ==0" mat-icon-button (click)="openDialog(row, 'add')">
+              <mat-icon>add_to_queue</mat-icon>
+            </button>
+            <div class="quantity" *ngIf="getQuantity(row.$key) !=0">
+              <button class="adddeletebtn" mat-flat-button (click)="addto(row)">+</button>
+              <button class="newaddbtn1" mat-flat-button (click)="openDialog(row,'add')">
+                {{getQuantity(row.$key)}} {{getMeasurementUnitlend(row.$key)}}</button>
+              <button class="adddeletebtn" mat-flat-button (click)="subtractfromcart(row)">-</button>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginatorchem [pageSizeOptions]="[5,10,25,100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+    </div>
+
+
+
+
+  </mat-tab>
+  <mat-tab label="Perishables">Content 3</mat-tab>
+  <mat-tab label="Permanent Equipment">Content 3</mat-tab>
+</mat-tab-group>

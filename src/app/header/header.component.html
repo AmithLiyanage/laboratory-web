@@ -14,8 +14,9 @@
           <a mat-button  routerLink="sign-in" routerLinkActive="mat-accent">Log in</a>
           <a mat-button routerLink="register-user" routerLinkActive="mat-accent">Sign Up</a>
         </div>
+       
         <div *ngIf="IsSignedIn">
-            <a mat-icon-button matBadge="{{addcartitemcount}}" matBadgePosition="before"  matBadgeColor="accent" routerLinkActive="mat-accent" routerLink="Addnewcart"><mat-icon>add_box</mat-icon></a>
+            <a mat-icon-button     matBadge="{{addcartitemcount}}" matBadgeHidden="{{addcartitemcount==0}}" matBadgePosition="before"  matBadgeColor="accent" routerLinkActive="mat-accent" routerLink="Addnewcart"><mat-icon>add_box</mat-icon></a>
             <a mat-button (click)="authService.SignOut()" routerLinkActive="mat-accent">Log out</a>
             <a mat-button routerLink="profile" routerLinkActive="mat-accent">Profile</a>
           </div>

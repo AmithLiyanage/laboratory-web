@@ -4,7 +4,8 @@ import { auth } from 'firebase/app';
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from "@angular/router";
-import {Subject} from 'rxjs';
+import { Subject } from 'rxjs';
+import { UiService } from './ui.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,14 +13,15 @@ import {Subject} from 'rxjs';
 
 export class AuthService {
   userData: any; // Save logged in user data
-  authChange =new Subject<boolean>();
+  authChange = new Subject<boolean>();
 
   constructor(
     public afs: AngularFirestore,   // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
-    public router: Router,  
-    public ngZone: NgZone // NgZone service to remove outside scope warning
-  ) {    
+    public router: Router,
+    public ngZone: NgZone,
+    private uiService: UiService // NgZone service to remove outside scope warning
+  ) {
     /* Saving user data in localstorage when 
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe(user => {
@@ -31,33 +33,40 @@ export class AuthService {
       } else {
         localStorage.setItem('user', null);
         JSON.parse(localStorage.getItem('user'));
-        this.authChange.next(false); 
+        this.authChange.next(false);
       }
     })
   }
 
   // Sign in with email/password
   SignIn(email, password) {
+    this.uiService.loadingStateChanged.next(true);
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then((result) => {
+
         this.ngZone.run(() => {
           this.router.navigate(['dashboardmain']);
         });
         this.SetUserData(result.user);
+        this.uiService.loadingStateChanged.next(false);
       }).catch((error) => {
         window.alert(error.message)
+        this.uiService.loadingStateChanged.next(false);
       })
   }
 
   // Sign up with email/password
   SignUp(email, password) {
+    this.uiService.loadingStateChanged.next(true);
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
+        this.uiService.loadingStateChanged.next(false);
         /* Call the SendVerificaitonMail() function when new user sign 
         up and returns promise */
         this.SendVerificationMail();
         this.SetUserData(result.user);
       }).catch((error) => {
+        this.uiService.loadingStateChanged.next(false);
         window.alert(error.message)
       })
   }
@@ -65,27 +74,27 @@ export class AuthService {
   // Send email verfificaiton when new user sign up
   SendVerificationMail() {
     return this.afAuth.auth.currentUser.sendEmailVerification()
-    .then(() => {
-      this.router.navigate(['verify-email-address']);
-    })
+      .then(() => {
+        this.router.navigate(['verify-email-address']);
+      })
   }
 
   // Reset Forggot password
   ForgotPassword(passwordResetEmail) {
     return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail)
-    .then(() => {
-      window.alert('Password reset email sent, check your inbox.');
-    }).catch((error) => {
-      window.alert(error)
-    })
+      .then(() => {
+        window.alert('Password reset email sent, check your inbox.');
+      }).catch((error) => {
+        window.alert(error)
+      })
   }
 
   // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
     // this.firebase.auth().currentUser
-  //  if( this.afAuth.auth.currentUser){
-  //    return true;
-  //  }
+    //  if( this.afAuth.auth.currentUser){
+    //    return true;
+    //  }
     const user = JSON.parse(localStorage.getItem('user'));
     return (user !== null && user.emailVerified !== false) ? true : false;
   }
@@ -97,15 +106,18 @@ export class AuthService {
 
   // Auth logic to run auth providers
   AuthLogin(provider) {
+    this.uiService.loadingStateChanged.next(true);
     return this.afAuth.auth.signInWithPopup(provider)
-    .then((result) => {
-       this.ngZone.run(() => {
+      .then((result) => {
+        this.uiService.loadingStateChanged.next(false);
+        this.ngZone.run(() => {
           this.router.navigate(['dashboard']);
         })
-      this.SetUserData(result.user);
-    }).catch((error) => {
-      window.alert(error)
-    })
+        this.SetUserData(result.user);
+      }).catch((error) => {
+        this.uiService.loadingStateChanged.next(false);
+        window.alert(error)
+      })
   }
 
   /* Setting up user data when sign in with username/password, 

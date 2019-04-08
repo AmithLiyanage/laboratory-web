@@ -1,75 +1,90 @@
 <div class="container">
-<h1 class="mat-display-1">Glassware</h1>
-<div class="searchdiv">
-  <button mat-raised-button color="primary" (click)="OnCreate()">
-    <mat-icon>add</mat-icon>Create
-  </button>
+  <h1 class="mat-display-1">Glassware</h1>
+  <div class="searchdiv">
+    <button mat-raised-button color="primary" (click)="OnCreate()">
+      <mat-icon>add</mat-icon>Create
+    </button>
     <mat-form-field class="search-form-field">
       <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
       <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
-</div>
+  </div>
 
 
-<div class="mat-elevation-z8" >
-<mat-table [dataSource]="listData" matSort>
-  <ng-container matColumnDef="item_name">
-  <mat-header-cell *matHeaderCellDef mat-sort-header>Category Name</mat-header-cell>
-  <mat-cell *matCellDef="let element">{{element.item_name}}</mat-cell>
-</ng-container>
-<ng-container matColumnDef="Quantity">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{element.Quantity}}</mat-cell>
-  </ng-container>
-  
-  <ng-container matColumnDef="Addition" >
-    <mat-header-cell class="newaddheader" *matHeaderCellDef >Add to pending New Arrivals</mat-header-cell>
-    <mat-cell *matCellDef="let row" >
-        <button class="newaddbtn" *ngIf="getQuantity(row.$key) ==0" mat-icon-button  (click)="openDialog(row, 'add')"><mat-icon>add_to_queue</mat-icon></button>
-        <div class="quantity" *ngIf="getQuantity(row.$key) !=0">
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="listData" matSort>
+      <ng-container matColumnDef="item_name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Category Name</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.item_name}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Quantity">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.Quantity}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Addition">
+        <mat-header-cell class="newaddheader" *matHeaderCellDef>Add to pending New Arrivals</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button class="newaddbtn" *ngIf="getQuantity(row.$key) ==0" mat-icon-button (click)="openDialog(row, 'add')">
+            <mat-icon>add_to_queue</mat-icon>
+          </button>
+          <div class="quantity" *ngIf="getQuantity(row.$key) !=0">
             <button class="adddeletebtn" mat-flat-button (click)="addto(row)">+</button>
-            <button class="newaddbtn1"   mat-flat-button  (click)="openDialog(row,'add')"> {{getQuantity(row.$key)}}</button>
-          <button class="adddeletebtn" mat-flat-button (click)="subtractfromcart(row)" >-</button>
-      </div>
-      </mat-cell>
-  </ng-container>
+            <button class="newaddbtn1" mat-flat-button (click)="openDialog(row,'add')">
+              {{getQuantity(row.$key)}}</button>
+            <button class="adddeletebtn" mat-flat-button (click)="subtractfromcart(row)">-</button>
+          </div>
+        </mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="Removal" >
-    <mat-header-cell class="newaddheader" *matHeaderCellDef >Add to pending Removals</mat-header-cell>
-    <mat-cell *matCellDef="let row" >
-        <button class="newaddbtn" *ngIf="getremovecartQuantity(row.$key) ==0" mat-icon-button  (click)="openDialog(row,'remove')" color="warn"><mat-icon>remove_from_queue</mat-icon></button>
-        <div class="quantity" *ngIf="getremovecartQuantity(row.$key) !=0">
+      <ng-container matColumnDef="Removal">
+        <mat-header-cell class="newaddheader" *matHeaderCellDef>Add to pending Removals</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button class="newaddbtn" *ngIf="getremovecartQuantity(row.$key) ==0" mat-icon-button
+            (click)="openDialog(row,'remove')" color="warn">
+            <mat-icon>remove_from_queue</mat-icon>
+          </button>
+          <div class="quantity" *ngIf="getremovecartQuantity(row.$key) !=0">
             <button class="adddeletebtn" mat-flat-button (click)="addtoRemovecart(row)">+</button>
-            <button class="newaddbtn1"   mat-flat-button  (click)="openDialog(row,'remove')">- {{getremovecartQuantity(row.$key)}}</button>
-          <button class="adddeletebtn" mat-flat-button (click)="subtractfromRemovecart(row)" >-</button>
-      </div>
-      </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let row">
-          <button mat-icon-button (click)="onEdit(row)"><mat-icon>launch</mat-icon></button>
-          <button mat-icon-button color="warn" (click)="onDelete(row.$key)"><mat-icon>delete_outline</mat-icon></button>  
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="loading">
-      <mat-footer-cell *matFooterCellDef colspan="3">
-      Loading data... 
-    </mat-footer-cell>
-    </ng-container>
-    <ng-container matColumnDef="nodata">
-      <mat-footer-cell *matFooterCellDef colspan="3">
-      No data
-    </mat-footer-cell>
-    </ng-container>
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>
-  <mat-footer-row *matFooterRowDef="['nodata']" [ngClass]="{'hide':!(listData!=null && listData.length>0)}"></mat-footer-row>
-</mat-table>
-<mat-paginator [pageSizeOptions]="[5,10,25,100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
-</div>
+            <button class="newaddbtn1" mat-flat-button (click)="openDialog(row,'remove')">-
+              {{getremovecartQuantity(row.$key)}}</button>
+            <button class="adddeletebtn" mat-flat-button (click)="subtractfromRemovecart(row)">-</button>
+          </div>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button mat-icon-button (click)="onEdit(row)">
+            <mat-icon>launch</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onDelete(row.$key,row)">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+          <button mat-icon-button  (click)="onRemove(row.$key,row)">
+            <mat-icon>settings_backup_restore</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="loading">
+        <mat-footer-cell *matFooterCellDef colspan="3">
+          Loading data...
+        </mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="nodata">
+        <mat-footer-cell *matFooterCellDef colspan="3">
+          No data
+        </mat-footer-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>
+      <mat-footer-row *matFooterRowDef="['nodata']" [ngClass]="{'hide':!(listData!=null && listData.length>0)}">
+      </mat-footer-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5,10,25,100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+  </div>
 
 </div>

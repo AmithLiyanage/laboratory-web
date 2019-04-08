@@ -52,3 +52,7 @@ mat-footer-row{
     text-align: center;
     align-content: center;
 }
+
+.center > .mat-simple-snackbar {
+    justify-content: center;
+  }

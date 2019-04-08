@@ -1,0 +1,114 @@
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Details of the lending</ng-template>
+    
+
+      <div class="step1form" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="100px">
+      <mat-form-field  class="teacheroptions">
+      <mat-label>Teachers</mat-label>
+      <mat-select formControlName="firstCtrl" [(value)]="selectedteacher">
+        <mat-option *ngFor="let teacher of Teachers" [value]="teacher.name">
+          {{teacher.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <mat-form-field class="example-full-width">
+      <input matInput [matDatepicker]="picker" placeholder="Date" [(ngModel)]="planModel.start_time" disabled="true" [ngModelOptions]="{standalone: true}" name="createdate"
+        required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Time"  value=" {{today | date:'shortTime'}}"  disabled="true" required>
+    </mat-form-field>
+  </div>
+      <div>
+        <button mat-raised-button color="primary" matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Pick items to lend</ng-template>
+      <!-- <mat-form-field>
+        <input matInput placeholder="Address" formControlName="secondCtrl" required>
+      </mat-form-field> -->
+        <lending-form-step2 (QuantitySubmited)="onQuantitysubmit()"></lending-form-step2>
+      <div class="stepper2buttons" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px">
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button color="primary" matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Confirm</ng-template>
+    <h1 class="mat-h1">Confirm lending</h1>
+    <div>
+        <div class="step1form" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="100px">
+        <mat-form-field  class="teacheroptions">
+            <mat-label>Teachers</mat-label>
+            <mat-select  [(ngModel)]="selectedteacher">
+              <mat-option *ngFor="let teacher of Teachers" [value]="teacher.name">
+                {{teacher.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+              <input matInput [matDatepicker]="pickertwo" placeholder="Date" [(ngModel)]="planModel.start_time" disabled="true" [ngModelOptions]="{standalone: true}" name="createdate"
+                required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Time"  value=" {{today | date:'shortTime'}}"  disabled="true" required>
+            </mat-form-field>
+          </div>
+
+          <div id="tablecontainer">
+              <mat-table #table [dataSource]="listData" class="mat-elevation-z8">
+                <!-- Position Column -->
+                <ng-container matColumnDef="item_name">
+                  <mat-header-cell *matHeaderCellDef> Item Name </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.item_name}} </mat-cell>
+                </ng-container>
+          
+                <ng-container matColumnDef="AvailableQuantity">
+                  <mat-header-cell class="availableheader" *matHeaderCellDef> Available </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.availablequantity}} {{  element.measurement}} </mat-cell>
+                </ng-container>
+        
+          
+                <ng-container matColumnDef="lendquantity">
+                    <mat-header-cell class="newaddheader" *matHeaderCellDef>Change Quantity</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      <!-- <button class="newaddbtn" *ngIf="getQuantity(row.$key) ==0" mat-icon-button  (click)="addto(row)"><mat-icon>add_to_queue</mat-icon></button> -->
+                      <!-- <div class="quantity" >
+                          <button class="adddeletebtn2" mat-flat-button (click)="addto(element)">+</button>
+                          {{element.Quantity}}
+                        <button class="adddeletebtn2" mat-flat-button (click)="subtractfromcart(element)" >-</button>
+                    </div> -->
+            
+                      <!-- <button class="newaddbtn" *ngIf="(element.Quantity==0)" mat-icon-button  (click)="openDialog(element)"><mat-icon>add_to_queue</mat-icon></button> -->
+                      <div class="quantity" *ngIf="element.Quantity!=0">
+                        <button class="adddeletebtn" mat-flat-button (click)="addto(element)">+</button>
+                        <button class="newaddbtn1" mat-flat-button (click)="openDialog(element)">{{element.Quantity}}
+                          {{element.measurement}}</button>
+                        <button class="adddeletebtn" mat-flat-button (click)="subtractfromcart(element)">-</button>
+                      </div>
+                    </mat-cell>
+                </ng-container>
+        
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              </mat-table>
+            </div>
+        <div class="stepper3buttons" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px">
+      <button mat-raised-button matStepperPrevious>Back</button>
+      <!-- <button mat-raised-button color="primary" (click)="stepper.reset()">Reset</button> -->
+      <button mat-raised-button color="primary" >Done</button>
+      </div>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>

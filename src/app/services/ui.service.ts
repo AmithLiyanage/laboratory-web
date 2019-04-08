@@ -6,17 +6,17 @@ import { MatSnackBar } from '@angular/material';
   providedIn: 'root'
 })
 export class UiService {
-  loadingStateChanged=new Subject<boolean>();
+  loadingStateChanged = new Subject<boolean>();
 
-  constructor(private snackbar:MatSnackBar){
-  
+  constructor(private snackbar: MatSnackBar) {
+
 
   }
 
 
-  showSnackbar(message,action,duration){
-      this.snackbar.open(message,action,{
-          duration:duration 
-      } )
+  showSnackbar(message, action, duration) {
+    this.snackbar.open(message, action, {
+      duration: duration
+    })
   }
 }
